@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repaso de FyQ: temas 1 y 2</title>
+<meta name="description" content="Juego de preguntas para repasar Física y Química de 2.º ESO: medir y la materia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stage:#152a63; --stage-2:#0f1f4c; --card:#ffffff; --ink:#0d1b3e; --ink-soft:#4a5980;
+  --chalk:#f4f7ff; --line:#d7def0; --sun:#ffc93c; --mint:#3ecf9a; --coral:#ff6b6b;
+  --lav:#b08bff; --sky:#5cc8ff; --ok:#1f9d5a; --bad:#d64040; --num:#2743c4; --soft:#eef2fb;
+  --why:#e9f5ff; --why-ink:#0d1b3e;
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --stage:#0d1938; --stage-2:#070f24; --card:#182746; --ink:#f0f4ff;
+    --ink-soft:#a9b6d8; --line:#2e3f68; --num:#9db6ff; --soft:#22345c; --why:#1d3557; --why-ink:#e8f1ff;
+  }
+}
+:root[data-theme="dark"]{
+  --stage:#0d1938; --stage-2:#070f24; --card:#182746; --ink:#f0f4ff;
+  --ink-soft:#a9b6d8; --line:#2e3f68; --num:#9db6ff; --soft:#22345c; --why:#1d3557; --why-ink:#e8f1ff;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%}
+body{
+  margin:0; min-height:100%;
+  background:radial-gradient(120% 90% at 50% 0%, var(--stage) 0%, var(--stage-2) 100%) fixed;
+  background-color:var(--stage-2);
+  color:var(--chalk); font-family:Lexend,"Segoe UI",system-ui,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+}
+button,input{font-family:inherit}
+button{cursor:pointer; border:none}
+:focus-visible{outline:4px solid var(--sun); outline-offset:3px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+.wrap{max-width:760px; margin:0 auto; padding:clamp(14px,3vw,30px) 16px 60px}
+h1,h2{margin:0; letter-spacing:-.01em}
+.titulo{font-size:clamp(2.1rem,7vw,3.8rem); font-weight:800; line-height:1.02; text-align:center}
+.titulo span{display:block; color:var(--sun)}
+.sub{color:#c6d2f2; text-align:center; max-width:52ch; margin:14px auto 0; font-size:clamp(1rem,2.2vw,1.15rem)}
+.btn{border-radius:14px; padding:.65em 1.3em; font-size:clamp(.95rem,2vw,1.1rem); font-weight:600; background:rgba(255,255,255,.12); color:var(--chalk); border:2px solid rgba(255,255,255,.25)}
+.btn:hover{background:rgba(255,255,255,.22)}
+.btn.principal{background:var(--sun); color:#14203f; border-color:var(--sun); font-weight:800}
+.btn.verde{background:var(--mint); color:#06301f; border-color:var(--mint); font-weight:800}
+.fila{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.centro{justify-content:center}
+.temas{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:24px}
+.tema{background:var(--card); color:var(--ink); border-radius:18px; padding:16px 18px; text-align:left; border:3px solid transparent; display:flex; flex-direction:column; gap:4px; min-height:130px}
+.tema:hover{border-color:var(--sun)}
+.tema .ico{font-size:1.9rem; line-height:1}
+.tema b{font-size:1.15rem; line-height:1.2}
+.tema small{color:var(--ink-soft)}
+.tema .record{margin-top:auto; font-size:.85rem; font-weight:600; color:var(--num)}
+.nota{color:#c6d2f2; text-align:center; font-size:.92rem; margin-top:18px}
+/* partida */
+.cabeza{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+.cabeza .marc{display:flex; gap:14px; font-weight:800; font-size:1.05rem}
+.cabeza .marc .racha{color:var(--sun)}
+.barra{height:10px; background:rgba(255,255,255,.12); border-radius:99px; overflow:hidden; margin:12px 0 0}
+.barra i{display:block; height:100%; background:linear-gradient(90deg,var(--mint),var(--sun)); border-radius:99px; transition:width .35s}
+.carta{background:var(--card); color:var(--ink); border-radius:22px; padding:clamp(16px,3.4vw,28px); margin-top:16px}
+.etq{display:inline-block; font-size:.78rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft)}
+.preg{font-size:clamp(1.15rem,3.2vw,1.45rem); font-weight:600; line-height:1.35; margin:6px 0 16px}
+.ops{display:grid; gap:10px}
+.op{background:var(--card); color:var(--ink); border:2px solid var(--line); border-radius:14px; padding:.75em 1em; text-align:left; font-size:1.05rem; font-weight:600}
+.op:hover:not(:disabled){border-color:var(--num)}
+.op.bien{background:var(--ok); color:#fff; border-color:var(--ok)}
+.op.mal{background:var(--bad); color:#fff; border-color:var(--bad)}
+.op:disabled{cursor:default}
+.vf{grid-template-columns:1fr 1fr}
+.vf .op{text-align:center; font-size:1.2rem}
+.num{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.num input{font-size:1.3rem; width:9em; padding:.45em .7em; border-radius:12px; border:2px solid var(--line); background:#fff; color:#0d1b3e}
+.num .u{font-weight:800; font-size:1.2rem}
+.orden-lista{display:grid; gap:8px}
+.orden-lista .op .pos{display:inline-block; min-width:1.8em; height:1.8em; border-radius:50%; background:var(--soft); color:var(--ink); text-align:center; line-height:1.8em; margin-right:8px; font-weight:800}
+.orden-lista .op.puesto{opacity:.55}
+.por{background:var(--why); color:var(--why-ink); border-left:6px solid var(--sky); border-radius:12px; padding:12px 14px; margin-top:16px}
+.por.bien{border-left-color:var(--ok)} .por.mal{border-left-color:var(--bad)}
+.por b.r{display:block; font-size:1.1rem; margin-bottom:4px}
+.por.bien b.r{color:var(--ok)} .por.mal b.r{color:var(--bad)}
+.sig{margin-top:16px; display:flex; justify-content:flex-end}
+/* final */
+.estrellas{font-size:3rem; text-align:center; letter-spacing:.1em}
+.final h2{text-align:center; font-size:clamp(1.6rem,5vw,2.3rem); font-weight:800}
+.final .pts{text-align:center; color:var(--ink-soft); margin:6px 0 0}
+.fallos{margin:18px 0 0; padding:0; list-style:none; display:grid; gap:10px}
+.fallos li{background:var(--soft); border-radius:12px; padding:10px 12px}
+.fallos li span{display:block; color:var(--ok); font-weight:600; margin-top:3px}
+.oculto{display:none!important}
+@keyframes salta{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+.salta{animation:salta .3s}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<section id="inicio">
+  <h1 class="titulo">Repaso de FyQ <span>temas 1 y 2</span></h1>
+  <p class="sub">Rondas de 10 preguntas sacadas del resumen. Después de cada una te digo por qué. Al final, repasa tus fallos hasta que no quede ninguno.</p>
+  <div class="temas">
+    <button class="tema" data-tema="1"><span class="ico">📏</span><b>Tema 1 · Medir</b><small>Unidades, instrumentos, la media y el método científico</small><span class="record" data-rec="1"></span></button>
+    <button class="tema" data-tema="2"><span class="ico">🧊</span><b>Tema 2 · La materia</b><small>Propiedades, estados, cambios de estado y materiales</small><span class="record" data-rec="2"></span></button>
+    <button class="tema" data-tema="0"><span class="ico">🎲</span><b>Los dos temas</b><small>Mezclados, como en el examen</small><span class="record" data-rec="0"></span></button>
+  </div>
+  <p class="nota">No hace falta registrarse. Tu mejor marca se guarda solo en este navegador.</p>
+</section>
+
+<section id="juego" class="oculto">
+  <div class="cabeza">
+    <button class="btn" id="salir">← Salir</button>
+    <div class="marc"><span id="cuenta">1 / 10</span><span>⭐ <span id="puntos">0</span></span><span class="racha" id="racha"></span></div>
+  </div>
+  <div class="barra"><i id="prog" style="width:0"></i></div>
+  <div class="carta" id="carta">
+    <span class="etq" id="etq"></span>
+    <p class="preg" id="preg"></p>
+    <div id="zona"></div>
+    <div id="por" class="por oculto"></div>
+    <div class="sig"><button class="btn principal oculto" id="sig">Siguiente →</button></div>
+  </div>
+</section>
+
+<section id="final" class="oculto">
+  <div class="carta final">
+    <div class="estrellas" id="est"></div>
+    <h2 id="frase"></h2>
+    <p class="pts" id="pts"></p>
+    <ul class="fallos" id="fallos"></ul>
+    <div class="fila centro" style="margin-top:20px">
+      <button class="btn verde oculto" id="repasar">Repasar mis fallos</button>
+      <button class="btn principal" id="otra">Otra ronda</button>
+      <button class="btn" id="menu" style="color:var(--ink);border-color:var(--line)">Elegir tema</button>
+    </div>
+  </div>
+</section>
+
+</main>
+<script>
+"use strict";
+// ======================================================================= LAS PREGUNTAS
+// Salen del resumen «FQ - Resumen temas 1 y 2» (UD2FYQ - La materia/generar-resumen-fyq.py).
+// opc: la primera opcion es la buena (se barajan al pintar). vf: v = verdadero/falso.
+// orden: los pasos en su orden. num: se generan con numeros nuevos cada vez.
+const PREGUNTAS = [
+// ---------------------------------------------------------------- TEMA 1 · MEDIR
+{t:1, tipo:'opc', p:'Medir es…', ops:['Comparar con una unidad que hemos acordado todos','Mirar algo con mucha atención','Contar cuántas veces cabe un palmo','Escribir un número'], por:'Medir es comparar con una unidad que hemos acordado todos.'},
+{t:1, tipo:'opc', p:'¿Por qué no medimos con palmos o con pasos?', ops:['Porque a cada uno le sale un número distinto','Porque es más lento','Porque no se puede medir con el cuerpo','Porque los palmos son muy pequeños'], por:'Cada persona tiene un palmo distinto. Por eso usamos las mismas unidades y los mismos instrumentos.'},
+{t:1, tipo:'opc', p:'¿Cuál de estas es una medida bien escrita?', ops:['32 mm','32','mm','treinta y dos'], por:'Una medida es un número y una unidad: «32 mm», nunca «32» solo.'},
+{t:1, tipo:'vf', p:'«25» es una medida completa.', v:false, por:'Falta la unidad. Una medida es un número y una unidad: 25 cm, 25 s, 25 g…'},
+{t:1, tipo:'opc', p:'¿Qué es una magnitud?', ops:['Lo que se puede medir','Un instrumento de medida','Un número muy grande','La unidad del tiempo'], por:'Una magnitud es lo que se puede medir: la longitud, la masa, el tiempo, el volumen, la temperatura…'},
+{t:1, tipo:'opc', p:'¿Con qué instrumento se mide la masa?', ops:['Con la balanza','Con la probeta','Con el termómetro','Con el calibre'], por:'La masa se mide con la balanza, en kilogramos (kg) o gramos (g).'},
+{t:1, tipo:'opc', p:'¿Con qué instrumento se mide el tiempo?', ops:['Con el cronómetro','Con la balanza','Con la regla','Con la jeringuilla'], por:'El tiempo se mide con el cronómetro, en segundos (s).'},
+{t:1, tipo:'opc', p:'¿Con qué se mide el volumen de un líquido?', ops:['Con la probeta o la jeringuilla','Con la balanza','Con el calibre','Con el cronómetro'], por:'El volumen se mide con la probeta o la jeringuilla, en litros (L) o mililitros (mL).'},
+{t:1, tipo:'opc', p:'¿Con qué instrumento se mide la temperatura?', ops:['Con el termómetro','Con el cronómetro','Con la probeta','Con la balanza'], por:'La temperatura se mide con el termómetro, en grados centígrados (°C).'},
+{t:1, tipo:'opc', p:'¿Con qué instrumentos se mide la longitud?', ops:['Regla, calibre y metro','Balanza y probeta','Termómetro y cronómetro','Jeringuilla y probeta'], por:'La longitud se mide con la regla, el calibre o el metro, en metros (m), centímetros (cm) o milímetros (mm).'},
+{t:1, tipo:'opc', p:'¿En qué unidad se mide el tiempo?', ops:['Segundo (s)','Gramo (g)','Litro (L)','Metro (m)'], por:'El tiempo se mide en segundos (s).'},
+{t:1, tipo:'opc', p:'¿En qué unidad se mide la temperatura?', ops:['Grado centígrado (°C)','Kilogramo (kg)','Mililitro (mL)','Segundo (s)'], por:'La temperatura se mide en grados centígrados (°C).'},
+{t:1, tipo:'opc', p:'¿Cuál de estas es una unidad de volumen?', ops:['El mililitro (mL)','El gramo (g)','El milímetro (mm)','El segundo (s)'], por:'El litro (L) y el mililitro (mL) son unidades de volumen. ¡No confundas mililitro (mL) con milímetro (mm)!'},
+{t:1, tipo:'opc', p:'¿Cuál de estas es una unidad de masa?', ops:['El kilogramo (kg)','El metro (m)','El litro (L)','El grado (°C)'], por:'La masa se mide en kilogramos (kg) y gramos (g).'},
+{t:1, tipo:'opc', p:'1 metro son…', ops:['100 cm = 1.000 mm','10 cm = 100 mm','1.000 cm = 100 mm','100 mm = 1.000 cm'], por:'1 m = 100 cm = 1.000 mm.'},
+{t:1, tipo:'opc', p:'1 kilogramo son…', ops:['1.000 g','100 g','10 g','10.000 g'], por:'1 kg = 1.000 g.'},
+{t:1, tipo:'opc', p:'1 litro son…', ops:['1.000 mL','100 mL','10 mL','1.000 L'], por:'1 L = 1.000 mL.'},
+{t:1, tipo:'opc', p:'¿Por qué se mide varias veces lo mismo?', ops:['Para hacer la media y que la medida sea más fiable','Porque la primera siempre está mal','Para tardar más','Porque lo dice el instrumento'], por:'Al medir siempre hay pequeños errores. Se mide varias veces y se hace la media.'},
+{t:1, tipo:'opc', p:'¿Cómo se calcula la media de varias medidas?', ops:['Se suman todas y se divide entre cuántas hay','Se coge la más grande','Se resta la mayor menos la menor','Se multiplican todas'], por:'La media: se suman las medidas y se divide entre cuántas hay. 12 s, 13 s y 14 s → 39 : 3 = 13 s.'},
+{t:1, tipo:'opc', p:'¿Cómo se mide el volumen de un tornillo?', ops:['Se mete en agua y se mira cuánto sube el nivel','Con una regla','Con la balanza','No se puede medir'], por:'Se mira el nivel del agua, se mete el objeto y se vuelve a mirar: lo que sube el agua es lo que ocupa.'},
+{t:1, tipo:'orden', p:'Ordena los pasos de una investigación (el método científico).', items:['La pregunta','La hipótesis','El experimento','Lo que he medido (los datos)','La conclusión'], por:'Pregunta → hipótesis → experimento → datos medidos → conclusión.'},
+{t:1, tipo:'opc', p:'¿Qué es la hipótesis?', ops:['Lo que creo que va a pasar','Lo que he medido','La pregunta que me hago','El resultado final'], por:'La hipótesis es lo que creo que va a pasar, antes de comprobarlo con el experimento.'},
+{t:1, tipo:'opc', p:'¿Para qué sirve el experimento?', ops:['Para comprobar si la hipótesis es cierta','Para hacerse la pregunta','Para copiar el resultado','Para elegir la unidad'], por:'El experimento es cómo compruebo lo que creía (la hipótesis).'},
+{t:1, tipo:'vf', p:'Si el experimento dice que mi hipótesis era falsa, la investigación no vale.', v:false, por:'También vale: que la hipótesis no se cumpla también es un resultado.'},
+{t:1, tipo:'opc', p:'¿Cuál es el último paso de una investigación?', ops:['La conclusión','El experimento','La hipótesis','La pregunta'], por:'Se termina con la conclusión: ¿acerté o no?'},
+{t:1, tipo:'opc', p:'¿Qué son los EPI del taller?', ops:['Los equipos de protección, como gafas y guantes','Los instrumentos de medida','Las normas para recoger','Los materiales para fabricar'], por:'Los EPI son los equipos de protección individual: gafas, guantes…'},
+{t:1, tipo:'opc', p:'Un compañero se corta en el taller. ¿Qué haces?', ops:['Aviso al profesor','Sigo trabajando','Lo curo yo solo','Recojo y me voy'], por:'Si algo se rompe o alguien se corta, se avisa al profesor.'},
+{t:1, tipo:'vf', p:'En el taller se puede correr si tienes prisa.', v:false, por:'Una de las normas del taller es no correr, para no hacernos daño.'},
+{t:1, tipo:'num', gen:'media'},
+{t:1, tipo:'num', gen:'media'},
+{t:1, tipo:'num', gen:'agua'},
+{t:1, tipo:'num', gen:'pasa'},
+{t:1, tipo:'num', gen:'pasa'},
+// ------------------------------------------------------------ TEMA 2 · LA MATERIA
+{t:2, tipo:'opc', p:'¿Qué es la materia?', ops:['Todo lo que tiene masa y ocupa un lugar','Todo lo que se puede ver','Solo lo que es sólido','Todo lo que está vivo'], por:'Materia es todo lo que tiene masa y ocupa un lugar (volumen).'},
+{t:2, tipo:'vf', p:'El aire es materia.', v:true, por:'Sí: el aire tiene masa y ocupa un lugar, aunque no lo veamos.'},
+{t:2, tipo:'vf', p:'La alegría es materia.', v:false, por:'La alegría o el amor no tienen masa ni ocupan un lugar: son inmateriales.'},
+{t:2, tipo:'opc', p:'¿Cuál de estas cosas NO es materia?', ops:['El amor','El agua','Una célula','Un planeta'], por:'El amor es inmaterial: no tiene masa ni ocupa un lugar.'},
+{t:2, tipo:'opc', p:'¿Cuáles son propiedades generales de la materia?', ops:['Longitud, volumen y masa','Color, olor y sabor','Densidad y brillo','Fusión y ebullición'], por:'Las propiedades generales las tiene toda la materia: longitud, volumen y masa.'},
+{t:2, tipo:'opc', p:'El volumen es…', ops:['El espacio que ocupa un cuerpo','La cantidad de materia','La fuerza con que lo atrae la Tierra','La distancia entre dos puntos'], por:'El volumen es el espacio que ocupa, en litros (L) o metros cúbicos (m³).'},
+{t:2, tipo:'opc', p:'La masa es…', ops:['La cantidad de materia','El espacio que ocupa','Lo que pesa en la Luna','El color de un objeto'], por:'La masa es la cantidad de materia, y se mide en kilogramos (kg).'},
+{t:2, tipo:'opc', p:'La longitud es…', ops:['La distancia entre dos puntos','La cantidad de materia','El espacio que ocupa','La temperatura de un cuerpo'], por:'La longitud es la distancia entre dos puntos, en metros (m).'},
+{t:2, tipo:'opc', p:'¿Qué es el peso?', ops:['La fuerza con que la Tierra atrae un cuerpo','La cantidad de materia','El volumen de un cuerpo','Lo mismo que la masa'], por:'El peso es la fuerza con que la Tierra atrae un cuerpo. No es lo mismo que la masa.'},
+{t:2, tipo:'opc', p:'Un astronauta de 75 kg va a la Luna. ¿Qué masa tiene allí?', ops:['75 kg, la misma','Seis veces menos','Seis veces más','0 kg'], por:'La masa no cambia: sigue teniendo 75 kg. Lo que cambia es el peso: en la Luna pesa seis veces menos.'},
+{t:2, tipo:'vf', p:'En la Luna pesamos menos que en la Tierra, pero tenemos la misma masa.', v:true, por:'La masa es la misma; el peso es unas seis veces menor en la Luna.'},
+{t:2, tipo:'vf', p:'La masa y el peso son lo mismo.', v:false, por:'La masa es la cantidad de materia (kg). El peso es la fuerza con que la Tierra la atrae.'},
+{t:2, tipo:'opc', p:'¿Para qué sirven las propiedades específicas?', ops:['Para distinguir una materia de otra','Para saber cuánto pesa algo','Para medir la longitud','Para nada: todas las materias las tienen iguales'], por:'Las propiedades específicas distinguen una materia de otra: color, olor, sabor, brillo, densidad…'},
+{t:2, tipo:'vf', p:'Un trozo pequeño de chocolate sabe igual que uno grande.', v:true, por:'Las propiedades específicas no dependen de la cantidad.'},
+{t:2, tipo:'opc', p:'¿Cuál de estas es una propiedad específica que se nota con los sentidos?', ops:['El color','La masa','El volumen','La longitud'], por:'Con los sentidos notamos el color, el olor, el sabor y el brillo.'},
+{t:2, tipo:'opc', p:'La densidad dice…', ops:['Cuánta masa hay en un volumen','Cuánto ocupa un cuerpo','A qué temperatura hierve','De qué color es'], por:'La densidad es cuánta masa hay en un volumen. 1 L de agua tiene 1 kg y 1 L de aceite, 920 g.'},
+{t:2, tipo:'opc', p:'¿Por qué el aceite flota en el agua?', ops:['Porque es menos denso que el agua','Porque pesa más','Porque es un gas','Porque está más caliente'], por:'1 L de aceite tiene 920 g y 1 L de agua, 1 kg: el aceite es menos denso y por eso flota.'},
+{t:2, tipo:'opc', p:'¿Cuánta masa tiene 1 litro de agua?', ops:['1 kg','920 g','100 g','10 kg'], por:'1 L de agua tiene 1 kg (1.000 g).'},
+{t:2, tipo:'opc', p:'¿A qué temperatura se funde el hielo?', ops:['A 0 °C','A 100 °C','A 10 °C','A −100 °C'], por:'El hielo se funde a 0 °C: es su temperatura de fusión.'},
+{t:2, tipo:'opc', p:'¿A qué temperatura hierve el agua?', ops:['A 100 °C','A 0 °C','A 50 °C','A 1.000 °C'], por:'El agua hierve a 100 °C: es su temperatura de ebullición.'},
+{t:2, tipo:'opc', p:'¿Qué estado tiene forma fija y volumen fijo?', ops:['El sólido','El líquido','El gas','Ninguno'], por:'El sólido tiene forma fija y volumen fijo, y no fluye.'},
+{t:2, tipo:'opc', p:'¿Qué estado toma la forma del recipiente pero tiene volumen fijo?', ops:['El líquido','El sólido','El gas','Todos'], por:'El líquido toma la forma del recipiente, tiene volumen fijo y fluye.'},
+{t:2, tipo:'opc', p:'¿Qué estado ocupa todo el recipiente y se puede apretar?', ops:['El gas','El líquido','El sólido','El hielo'], por:'El gas tiene forma y volumen variables: ocupa todo y se puede apretar.'},
+{t:2, tipo:'vf', p:'Los sólidos fluyen.', v:false, por:'Los sólidos no fluyen. Los líquidos y los gases, sí.'},
+{t:2, tipo:'vf', p:'Un líquido tiene volumen fijo.', v:true, por:'El líquido cambia de forma (la del recipiente), pero su volumen es fijo.'},
+{t:2, tipo:'opc', p:'El paso de sólido a líquido se llama…', ops:['Fusión','Solidificación','Condensación','Evaporación'], por:'Sólido → líquido es la fusión. Pasa al calentar.'},
+{t:2, tipo:'opc', p:'El paso de líquido a gas se llama…', ops:['Evaporación','Condensación','Fusión','Solidificación'], por:'Líquido → gas es la evaporación (o la ebullición). Pasa al calentar.'},
+{t:2, tipo:'opc', p:'El paso de gas a líquido se llama…', ops:['Condensación','Evaporación','Fusión','Solidificación'], por:'Gas → líquido es la condensación. Pasa al enfriar, como el vaho en un cristal frío.'},
+{t:2, tipo:'opc', p:'El paso de líquido a sólido se llama…', ops:['Solidificación','Fusión','Condensación','Evaporación'], por:'Líquido → sólido es la solidificación. Pasa al enfriar, como el agua en el congelador.'},
+{t:2, tipo:'opc', p:'¿Qué cambios de estado ocurren al CALENTAR?', ops:['Fusión y evaporación','Condensación y solidificación','Fusión y condensación','Solo la solidificación'], por:'Al calentar (flechas rojas): fusión y evaporación.'},
+{t:2, tipo:'opc', p:'¿Qué cambios de estado ocurren al ENFRIAR?', ops:['Condensación y solidificación','Fusión y evaporación','Evaporación y condensación','Solo la fusión'], por:'Al enfriar (flechas azules): condensación y solidificación.'},
+{t:2, tipo:'opc', p:'Un charco se seca al sol. ¿Qué ha pasado?', ops:['Evaporación: solo en la superficie','Ebullición: en todo el líquido','Condensación','Fusión'], por:'La evaporación ocurre solo en la superficie del líquido, como en un charco al sol.'},
+{t:2, tipo:'opc', p:'El agua de una olla hierve a borbotones. ¿Cómo se llama?', ops:['Ebullición: en todo el líquido a la vez','Evaporación: solo en la superficie','Condensación','Solidificación'], por:'La ebullición ocurre en todo el líquido a la vez.'},
+{t:2, tipo:'vf', p:'La evaporación y la ebullición son lo mismo.', v:false, por:'Las dos pasan de líquido a gas, pero la evaporación es solo en la superficie y la ebullición, en todo el líquido.'},
+{t:2, tipo:'opc', p:'¿Qué son los materiales?', ops:['La materia que usamos para fabricar cosas','Todo lo que es sólido','Solo los metales','Las herramientas del taller'], por:'Los materiales son la materia que usamos para fabricar cosas.'},
+{t:2, tipo:'opc', p:'La lana, el cuero y la seda son materiales naturales de origen…', ops:['Animal','Vegetal','Mineral','Artificial'], por:'La lana, el cuero y la seda vienen de animales.'},
+{t:2, tipo:'opc', p:'La madera, el algodón y el corcho son de origen…', ops:['Vegetal','Animal','Mineral','Artificial'], por:'La madera, el algodón y el corcho vienen de plantas: son de origen vegetal.'},
+{t:2, tipo:'opc', p:'El mármol, la arena y la arcilla son de origen…', ops:['Mineral','Vegetal','Animal','Artificial'], por:'El mármol, la arena, la arcilla y el petróleo son de origen mineral.'},
+{t:2, tipo:'opc', p:'¿Cuál de estos materiales es artificial?', ops:['El plástico','La madera','La lana','El mármol'], por:'El plástico lo fabricamos transformando una materia prima, el petróleo.'},
+{t:2, tipo:'opc', p:'¿De qué materia prima se fabrica el plástico?', ops:['Del petróleo','De la arena','De la madera','De la arcilla'], por:'Petróleo → plástico.'},
+{t:2, tipo:'opc', p:'¿De qué materia prima se fabrica el vidrio?', ops:['De la arena','Del petróleo','De la madera','De la lana'], por:'Arena → vidrio.'},
+{t:2, tipo:'opc', p:'¿De qué materia prima se fabrican el papel y el cartón?', ops:['De la madera','Del petróleo','De la arena','De la arcilla'], por:'Madera → papel y cartón.'},
+{t:2, tipo:'opc', p:'¿De qué materia prima se fabrica la cerámica?', ops:['De la arcilla','De la arena','Del petróleo','Del algodón'], por:'Arcilla → cerámica.'},
+{t:2, tipo:'opc', p:'¿Cuáles son las tres erres?', ops:['Reducir, reutilizar y reciclar','Romper, recoger y reciclar','Reducir, reparar y repetir','Recoger, reutilizar y regalar'], por:'Las tres erres: reducir, reutilizar y reciclar.'},
+{t:2, tipo:'vf', p:'El petróleo es un material natural de origen mineral.', v:true, por:'El petróleo es natural, de origen mineral. Lo que fabricamos con él, el plástico, es artificial.'},
+];
+
+// ---------------------------------------------- las preguntas con numeros nuevos cada vez
+const azar = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const fmt = n => String(n).replace('.', ',');
+const GEN = {
+  media() {
+    let m = azar(10, 40), d = azar(1, 3);
+    const xs = [m - d, m, m + d].sort(() => Math.random() - .5);
+    const u = Math.random() < .5 ? 's' : 'cm';
+    return {p:`Mides tres veces lo mismo: ${xs.join(` ${u}, `)} ${u}. ¿Cuál es la media?`, r:m, u,
+      por:`Se suman y se divide entre 3: ${xs.join(' + ')} = ${3 * m}; ${3 * m} : 3 = ${m} ${u}.`};
+  },
+  agua() {
+    const a = azar(4, 9) * 10, v = azar(3, 25), obj = ['una piedra', 'un tornillo', 'una canica', 'una llave'][azar(0, 3)];
+    return {p:`En una probeta hay ${a} mL de agua. Meto ${obj} y el agua sube hasta ${a + v} mL. ¿Qué volumen tiene ${obj}?`,
+      r:v, u:'mL', por:`Lo que sube el agua es lo que ocupa: ${a + v} − ${a} = ${v} mL.`};
+  },
+  pasa() {
+    const c = [
+      () => { const n = azar(2, 9); return {p:`¿Cuántos centímetros son ${n} m?`, r:n * 100, u:'cm', por:`1 m = 100 cm → ${n} · 100 = ${n * 100} cm.`}; },
+      () => { const n = azar(2, 9); return {p:`¿Cuántos gramos son ${n} kg?`, r:n * 1000, u:'g', por:`1 kg = 1.000 g → ${n} · 1.000 = ${n * 1000} g.`}; },
+      () => { const n = azar(2, 9); return {p:`¿Cuántos mililitros son ${n} L?`, r:n * 1000, u:'mL', por:`1 L = 1.000 mL → ${n} · 1.000 = ${n * 1000} mL.`}; },
+      () => { const n = azar(2, 9); return {p:`¿Cuántos milímetros son ${n} m?`, r:n * 1000, u:'mm', por:`1 m = 1.000 mm → ${n} · 1.000 = ${n * 1000} mm.`}; },
+      () => { const n = azar(2, 9) * 1000; return {p:`¿Cuántos kilogramos son ${n.toLocaleString('es-ES')} g?`, r:n / 1000, u:'kg', por:`1.000 g = 1 kg → ${n.toLocaleString('es-ES')} : 1.000 = ${n / 1000} kg.`}; },
+      () => { const n = azar(2, 9) * 100; return {p:`¿Cuántos metros son ${n} cm?`, r:n / 100, u:'m', por:`100 cm = 1 m → ${n} : 100 = ${n / 100} m.`}; },
+    ];
+    return c[azar(0, c.length - 1)]();
+  },
+};
+
+// ======================================================================= EL JUEGO
+const RONDA = 10;
+const $ = id => document.getElementById(id);
+let repaso = false, tema = 0, ronda = [], i = 0, puntos = 0, racha = 0, aciertos = 0, fallos = [], mazos = {};
+const baraja = a => { a = a.slice(); for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+
+function guarda(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function lee(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+function pintaRecords() {
+  document.querySelectorAll('[data-rec]').forEach(el => {
+    const r = lee('repaso-fyq-record-' + el.dataset.rec);
+    el.textContent = r ? 'Tu mejor ronda: ' + r + ' / ' + RONDA : '';
+  });
+}
+
+function saca(n) {
+  // sin repetir hasta agotar el mazo del tema
+  const k = String(tema);
+  const out = [];
+  while (out.length < n) {
+    if (!mazos[k] || !mazos[k].length) mazos[k] = baraja(PREGUNTAS.filter(q => !tema || q.t === tema));
+    const q = mazos[k].pop();
+    if (!out.includes(q)) out.push(q);
+  }
+  return out;
+}
+
+function prepara(q) { return q.tipo === 'num' ? Object.assign({t:q.t, tipo:'num', gen:q.gen}, GEN[q.gen]()) : q; }
+
+function empieza(lista, esRepaso) {
+  repaso = !!esRepaso;
+  ronda = lista.map(prepara); i = 0; puntos = 0; racha = 0; aciertos = 0; fallos = [];
+  $('inicio').classList.add('oculto'); $('final').classList.add('oculto'); $('juego').classList.remove('oculto');
+  pinta();
+}
+
+function pinta() {
+  const q = ronda[i];
+  $('cuenta').textContent = (i + 1) + ' / ' + ronda.length;
+  $('puntos').textContent = puntos;
+  $('racha').textContent = racha >= 2 ? '🔥 ' + racha : '';
+  $('prog').style.width = (i / ronda.length * 100) + '%';
+  $('etq').textContent = (q.t === 1 ? 'Tema 1 · Medir' : 'Tema 2 · La materia') +
+    ({opc:'', vf:' · ¿verdadero o falso?', orden:' · ordena', num:' · calcula'})[q.tipo];
+  $('preg').textContent = q.p;
+  $('por').className = 'por oculto';
+  $('sig').classList.add('oculto');
+  const z = $('zona'); z.innerHTML = '';
+  if (q.tipo === 'opc') {
+    z.className = 'ops';
+    baraja(q.ops.map((t, k) => ({t, ok:k === 0}))).forEach(o => {
+      const b = document.createElement('button'); b.className = 'op'; b.textContent = o.t; b.dataset.ok = o.ok ? 1 : '';
+      b.onclick = () => { marcaBotones(b); responde(o.ok, q.ops[0]); };
+      z.appendChild(b);
+    });
+  } else if (q.tipo === 'vf') {
+    z.className = 'ops vf';
+    [['Verdadero', true], ['Falso', false]].forEach(([t, v]) => {
+      const b = document.createElement('button'); b.className = 'op'; b.textContent = t; b.dataset.ok = v === q.v ? 1 : '';
+      b.onclick = () => { marcaBotones(b); responde(v === q.v, q.v ? 'Verdadero' : 'Falso'); };
+      z.appendChild(b);
+    });
+  } else if (q.tipo === 'orden') {
+    z.className = 'orden-lista';
+    const puestos = [];
+    const ayuda = document.createElement('p'); ayuda.style.margin = '0 0 4px'; ayuda.style.color = 'var(--ink-soft)';
+    ayuda.textContent = 'Pulsa los pasos en orden: primero el 1.º, luego el 2.º…';
+    z.appendChild(ayuda);
+    baraja(q.items).forEach(t => {
+      const b = document.createElement('button'); b.className = 'op'; b.innerHTML = '<span class="pos"></span>';
+      b.appendChild(document.createTextNode(t));
+      b.onclick = () => {
+        if (b.classList.contains('puesto')) return;
+        puestos.push(t); b.classList.add('puesto'); b.querySelector('.pos').textContent = puestos.length;
+        if (puestos.length === q.items.length) {
+          const ok = puestos.every((x, k) => x === q.items[k]);
+          z.querySelectorAll('.op').forEach(o => { o.disabled = true; o.classList.remove('puesto');
+            const txt = o.textContent.replace(/^\d+/, ''); o.classList.add(q.items.indexOf(txt) === puestos.indexOf(txt) ? 'bien' : 'mal'); });
+          responde(ok, q.items.map((x, k) => (k + 1) + '. ' + x).join(' · '));
+        }
+      };
+      z.appendChild(b);
+    });
+  } else {
+    z.className = 'num';
+    z.innerHTML = '<input id="resp" inputmode="decimal" autocomplete="off" aria-label="Tu respuesta"><span class="u">' + q.u +
+      '</span><button class="btn principal" id="comprueba">Comprobar</button>';
+    const inp = $('resp');
+    const fn = () => {
+      const v = parseFloat(inp.value.replace(/\./g, '').replace(',', '.'));
+      if (isNaN(v)) { inp.focus(); return; }
+      inp.disabled = true; $('comprueba').disabled = true;
+      inp.style.borderColor = v === q.r ? 'var(--ok)' : 'var(--bad)';
+      responde(v === q.r, fmt(q.r) + ' ' + q.u);
+    };
+    $('comprueba').onclick = fn;
+    inp.onkeydown = e => { if (e.key === 'Enter') fn(); };
+    setTimeout(() => inp.focus(), 50);
+  }
+}
+
+function marcaBotones(elegido) {
+  $('zona').querySelectorAll('.op').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.ok) b.classList.add('bien');
+    else if (b === elegido) b.classList.add('mal');
+  });
+}
+
+function responde(ok, buena) {
+  const q = ronda[i];
+  if (ok) { aciertos++; racha++; puntos += 10 + (racha >= 3 ? 5 : 0); }
+  else { racha = 0; fallos.push({q, buena}); }
+  const por = $('por');
+  por.className = 'por ' + (ok ? 'bien' : 'mal');
+  por.innerHTML = '';
+  const r = document.createElement('b'); r.className = 'r';
+  r.textContent = ok ? (racha >= 3 ? '¡Bien! Llevas ' + racha + ' seguidas 🔥' : '¡Bien!') : 'No. La respuesta es: ' + buena;
+  const t = document.createElement('span'); t.textContent = q.por;
+  por.append(r, t);
+  $('puntos').textContent = puntos;
+  $('racha').textContent = racha >= 2 ? '🔥 ' + racha : '';
+  $('carta').classList.remove('salta'); void $('carta').offsetWidth; $('carta').classList.add('salta');
+  $('sig').textContent = i + 1 < ronda.length ? 'Siguiente →' : 'Ver resultado';
+  $('sig').classList.remove('oculto'); $('sig').focus();
+}
+
+function termina() {
+  $('juego').classList.add('oculto'); $('final').classList.remove('oculto');
+  const n = ronda.length, f = aciertos / n;
+  $('est').textContent = f === 1 ? '⭐⭐⭐' : f >= .7 ? '⭐⭐☆' : f >= .4 ? '⭐☆☆' : '☆☆☆';
+  $('frase').textContent = f === 1 ? '¡Perfecto! Te lo sabes.' : f >= .7 ? '¡Muy bien! Repasa lo que has fallado.' :
+    f >= .4 ? 'Vas bien, pero repasa el resumen.' : 'Vuelve a leer el resumen y prueba otra vez.';
+  $('pts').textContent = aciertos + ' de ' + n + ' bien · ' + puntos + ' puntos';
+  if (!repaso) {
+    const k = 'repaso-fyq-record-' + tema, prev = +(lee(k) || 0);
+    if (aciertos > prev) guarda(k, aciertos);
+  }
+  const ul = $('fallos'); ul.innerHTML = '';
+  fallos.forEach(x => {
+    const li = document.createElement('li'); li.textContent = x.q.p;
+    const s = document.createElement('span'); s.textContent = '✔ ' + x.buena; li.appendChild(s); ul.appendChild(li);
+  });
+  $('repasar').classList.toggle('oculto', !fallos.length);
+}
+
+document.querySelectorAll('.tema').forEach(b => b.onclick = () => { tema = +b.dataset.tema; empieza(saca(RONDA)); });
+$('sig').onclick = () => { i++; if (i < ronda.length) pinta(); else termina(); };
+$('otra').onclick = () => empieza(saca(RONDA));
+$('repasar').onclick = () => {
+  // las de calcular vuelven con numeros nuevos; las demas, igual
+  const orig = fallos.map(x => x.q.gen ? {t:x.q.t, tipo:'num', gen:x.q.gen} : x.q);
+  empieza(baraja(orig), true);
+};
+const alMenu = () => { ['juego', 'final'].forEach(id => $(id).classList.add('oculto')); $('inicio').classList.remove('oculto'); pintaRecords(); };
+$('menu').onclick = alMenu;
+$('salir').onclick = alMenu;
+pintaRecords();
+</script>
+</body>
+</html>
